@@ -35,4 +35,4 @@ Now you can run `cdk` operations that require account access
 ## Running Local
 
 * `npm run build` - from `./server` - creates a js asset bundle to be served by the local express server
-* `npx run tsx -- lambdas/screenshot.ts` - creates screenshots of a test scene in the `screenshots/` folder
+* `npx run tsx -- lambdas/testLambda.ts` - runs the lambda locally

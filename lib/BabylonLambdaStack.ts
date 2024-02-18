@@ -36,7 +36,7 @@ export class BabylonLambdaStack extends Stack {
         bucket.grantReadWrite(lambdaRole);
 
         new NodejsFunction(this, 'BabylonLambda', {
-            entry: 'lambdas/test.ts',
+            entry: 'lambdas/screenshots.ts',
             handler: 'main',
             bundling: {
                 externalModules: ['aws-sdk'],

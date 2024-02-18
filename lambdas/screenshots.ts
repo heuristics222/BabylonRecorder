@@ -53,7 +53,7 @@ async function uploadScreenshot(page: Page, s3: S3Client, path: string): Promise
     });
 
     await s3.send(new PutObjectCommand({
-        Bucket: 'babylon-recorder-screenshots-434623153115',
+        Bucket: process.env['SCREENSHOT_BUCKET_NAME'],
         Key: path,
         ContentType: 'image/png',
         Body: buffer,
