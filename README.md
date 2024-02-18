@@ -31,3 +31,8 @@ Now you can run `cdk` operations that require account access
  * `cdk ls`          list all stacks in the app
  * `cdk deploy`      deploy this stack to your sso AWS account/region
  * `cdk diff`        compare deployed stack with current state
+
+## Running Local
+
+* `npm run build` - from `./server` - creates a js asset bundle to be served by the local express server
+* `npx run tsx -- lambdas/screenshot.ts` - creates screenshots of a test scene in the `screenshots/` folder
