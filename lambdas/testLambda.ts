@@ -1,7 +1,8 @@
-import { main } from './screenshots.js';
+import { run } from './screenshots.js';
 
 import { fromSSO } from '@aws-sdk/credential-providers';
 import { AssumeRoleCommand, GetCallerIdentityCommand, STSClient } from '@aws-sdk/client-sts';
+import puppeteer from 'puppeteer';
 
 const client = new STSClient({
     credentials: fromSSO({ profile: 'sso' }),
@@ -22,4 +23,6 @@ process.env['AWS_SECRET_ACCESS_KEY'] = assumedRole.Credentials?.SecretAccessKey;
 process.env['AWS_SESSION_TOKEN'] = assumedRole.Credentials?.SessionToken;
 process.env['SCREENSHOT_BUCKET_NAME'] = `babylon-recorder-screenshots-${identity.Account}`;
 
-await main();
+const browser = await puppeteer.launch();
+await run(browser);
+await browser.close();

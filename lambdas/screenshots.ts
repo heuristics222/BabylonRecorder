@@ -1,15 +1,14 @@
-import puppeteer, { Page } from 'puppeteer';
 import express from 'express';
+import { Browser, Page } from 'puppeteer';
 import { type Server } from 'http';
 import { type Widget } from '../server/lib/babylon.js';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
-export async function main(): Promise<void> {
+export async function run(browser: Browser): Promise<void> {
     const s3 = new S3Client({
         region: 'us-west-2',
     });
 
-    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setViewport({
         width: 1024,
@@ -18,13 +17,12 @@ export async function main(): Promise<void> {
 
     await testAmazon(page, s3);
     // await testBabylon(page);
-
-    await browser.close();
 }
 
 async function testAmazon(page: Page, s3: S3Client): Promise<void> {
+    console.log('navigating');
     await page.goto('https://www.amazon.com');
-
+    console.log('screenshotting');
     await uploadScreenshot(page, s3, 'amazon/screenshot.png');
 }
 

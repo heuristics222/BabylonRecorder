@@ -1,5 +1,6 @@
-import { RemovalPolicy, Stack, type StackProps } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack, type StackProps } from 'aws-cdk-lib';
 import { AccountPrincipal, CompositePrincipal, ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Architecture, Code, LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 
@@ -35,16 +36,29 @@ export class BabylonLambdaStack extends Stack {
 
         bucket.grantReadWrite(lambdaRole);
 
+        const layer = new LayerVersion(this, 'ChromiumLayer', {
+            layerVersionName: 'ChromiumLayer',
+            removalPolicy: RemovalPolicy.DESTROY,
+            code: Code.fromAsset('node_modules/@sparticuz/chromium/bin'),
+            compatibleArchitectures: [Architecture.X86_64],
+            compatibleRuntimes: [Runtime.NODEJS_18_X],
+        });
+
         new NodejsFunction(this, 'BabylonLambda', {
-            entry: 'lambdas/screenshots.ts',
+            entry: 'lambdas/lambdaEntry.ts',
             handler: 'main',
             bundling: {
                 externalModules: ['aws-sdk'],
+                sourceMap: true,
             },
             environment: {
                 SCREENSHOT_BUCKET_NAME: bucketName,
             },
             role: lambdaRole,
+            runtime: Runtime.NODEJS_18_X,
+            layers: [layer],
+            timeout: Duration.seconds(60),
+            memorySize: 1024,
         });
     }
 }
