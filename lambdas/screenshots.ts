@@ -15,8 +15,8 @@ export async function run(browser: Browser): Promise<void> {
         height: 768,
     });
 
-    await testAmazon(page, s3);
-    // await testBabylon(page);
+    // await testAmazon(page, s3);
+    await testBabylon(page, s3);
 }
 
 async function testAmazon(page: Page, s3: S3Client): Promise<void> {
@@ -58,16 +58,25 @@ async function uploadScreenshot(page: Page, s3: S3Client, path: string): Promise
     }));
 }
 
+function getStaticAssetPath() {
+    if (!process.env.LAMBDA_TASK_ROOT) {
+        return 'server/dist/public';
+    } else {
+        return '/opt/public';
+    }
+}
+
 export function startServer(): Server {
     const app = express();
-    app.use(express.static('server/dist'));
+    app.use(express.static(getStaticAssetPath()));
     app.get('/', (_req, res) => {
-        res.send(`<head>
-</head>
-<body style="margin: 0px">
-<canvas style="width:100%;height:100%"></canvas>
-<script src="index.js"></script>
-</body>`);
+        res.send(`
+            <head></head>
+            <body style="margin: 0px">
+                <canvas style="width:100%;height:100%"></canvas>
+                <script src="index.js"></script>
+            </body>`
+        );
     });
     return app.listen(3000);
 }

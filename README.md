@@ -36,3 +36,9 @@ Now you can run `cdk` operations that require account access
 
 * `npm run build` - from `./server` - creates a js asset bundle to be served by the local express server
 * `npx run tsx -- lambdas/testLambda.ts` - runs the lambda locally
+
+## Pull down screenshots and create a video
+
+`aws s3 sync s3://babylon-recorder-screenshots-{account}/screenshots/ screenshots/ --profile sso`
+
+`ffmpeg -framerate 60 -i "screenshots/%04d.png" -c:v libx264 -pix_fmt yuv420p screenshots/out.mp4`

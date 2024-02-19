@@ -4,6 +4,7 @@ const customized = stylistic.configs.customize({
     indent: 4,
     quotes: 'single',
     semi: true,
+    braceStyle: '1tbs'
 });
 
 module.exports = {

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "type": "module",
     "scripts": {
-        "build": "esbuild --outfile=dist/index.js --bundle lib/babylon.ts"
+        "build": "esbuild --outfile=dist/public/index.js --bundle lib/babylon.ts"
     },
     "devDependencies": {
         "@babylonjs/core": "^6.43.0",

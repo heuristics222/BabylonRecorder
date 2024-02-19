@@ -36,12 +36,18 @@ export class BabylonLambdaStack extends Stack {
 
         bucket.grantReadWrite(lambdaRole);
 
-        const layer = new LayerVersion(this, 'ChromiumLayer', {
+        const chromiumLayer = new LayerVersion(this, 'ChromiumLayer', {
             layerVersionName: 'ChromiumLayer',
             removalPolicy: RemovalPolicy.DESTROY,
             code: Code.fromAsset('node_modules/@sparticuz/chromium/bin'),
             compatibleArchitectures: [Architecture.X86_64],
             compatibleRuntimes: [Runtime.NODEJS_18_X],
+        });
+
+        const serverLayer = new LayerVersion(this, 'ServerLayer', {
+            layerVersionName: 'ServerLayer',
+            removalPolicy: RemovalPolicy.DESTROY,
+            code: Code.fromAsset('server/dist'),
         });
 
         new NodejsFunction(this, 'BabylonLambda', {
@@ -56,7 +62,7 @@ export class BabylonLambdaStack extends Stack {
             },
             role: lambdaRole,
             runtime: Runtime.NODEJS_18_X,
-            layers: [layer],
+            layers: [serverLayer, chromiumLayer],
             timeout: Duration.seconds(60),
             memorySize: 1024,
         });
