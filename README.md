@@ -26,7 +26,9 @@ Now your aws cli has a `sso` profile that can be used for access.  Daily access 
 aws sso login --profile sso
 ```
 
-Now you can run `cdk` operations that require account access
+Now you can run `cdk` operations that require account access like below
+
+`npm -w babylon-recorder-infra run cdk  -- diff`
 
  * `cdk ls`          list all stacks in the app
  * `cdk deploy`      deploy this stack to your sso AWS account/region
@@ -34,8 +36,9 @@ Now you can run `cdk` operations that require account access
 
 ## Running Local
 
-* `npm run build` - from `./server` - creates a js asset bundle to be served by the local express server
-* `npx run tsx -- lambdas/testLambda.ts` - runs the lambda locally
+* `npm -w babylon-recorder-lambdas run build` - build the lambdas
+* `npm -w babylon-server run build` - build the server js (served by express js to the headless puppeteer browser)
+* `npx tsx -- packages/lambdas/src/testLambda.ts` - runs the lambda locally
 
 ## Pull down screenshots and create a video
 

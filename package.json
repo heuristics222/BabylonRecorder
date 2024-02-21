@@ -29,5 +29,8 @@
         "@aws-sdk/credential-providers": "3.515.0",
         "aws-cdk-lib": "^2.128.0",
         "constructs": "^10.3.0"
-    }
+    },
+    "workspaces": [
+        "packages/*"
+    ]
 }

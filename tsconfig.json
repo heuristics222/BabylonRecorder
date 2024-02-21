@@ -28,7 +28,7 @@
     },
     "include": [
         "lib/**/*",
-        "lambdas/**/*",
+        "lambdas/**/*", "packages/lambdas/src/lambdaEntry.ts", "packages/lambdas/src/screenshots.ts", "packages/lambdas/src/server.ts", "packages/lambdas/src/testLambda.ts",
     ],
     "exclude": [
         "node_modules",

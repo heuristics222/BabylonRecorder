@@ -1,10 +1,10 @@
 import express from 'express';
-import { Browser, Page } from 'puppeteer';
+import { Browser, JSHandle, Page } from 'puppeteer';
 import { type Server } from 'http';
-import { type Widget } from '../server/lib/babylon.js';
+import { type Widget } from 'babylon-server/src/babylon.js';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
-export async function run(browser: Browser): Promise<void> {
+export async function run(browser: Browser, babylon: boolean = true): Promise<void> {
     const s3 = new S3Client({
         region: 'us-west-2',
     });
@@ -15,8 +15,11 @@ export async function run(browser: Browser): Promise<void> {
         height: 768,
     });
 
-    // await testAmazon(page, s3);
-    await testBabylon(page, s3);
+    if (babylon) {
+        await testBabylon(page, s3);
+    } else {
+        await testAmazon(page, s3);
+    }
 }
 
 async function testAmazon(page: Page, s3: S3Client): Promise<void> {
@@ -31,7 +34,8 @@ async function testBabylon(page: Page, s3: S3Client): Promise<void> {
     await page.goto('http://localhost:3000');
 
     const canvas = await page.evaluateHandle(() => document.getElementsByTagName('canvas')[0]);
-    const widget = await page.evaluateHandle(canvas => new Widget(canvas), canvas);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const widget = await page.evaluateHandle(canvas => new (<any>window).Widget(canvas), canvas) as JSHandle<Widget>;
     let frame = 0;
 
     await page.evaluate(widget => widget.moveCamera(), widget);
@@ -60,7 +64,7 @@ async function uploadScreenshot(page: Page, s3: S3Client, path: string): Promise
 
 function getStaticAssetPath() {
     if (!process.env.LAMBDA_TASK_ROOT) {
-        return 'server/dist/public';
+        return 'node_modules/babylon-server/dist/public';
     } else {
         return '/opt/public';
     }

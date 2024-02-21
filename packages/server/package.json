@@ -1,0 +1,8 @@
+{
+    "name": "babylon-server",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "build": "esbuild --outfile=dist/public/index.js --bundle src/babylon.ts"
+    }
+}

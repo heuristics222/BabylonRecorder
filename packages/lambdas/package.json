@@ -1,0 +1,8 @@
+{
+    "name": "babylon-recorder-lambdas",
+    "version": "0.1.0",
+    "type": "module",
+    "scripts": {
+        "build": "esbuild --platform=node --outfile=dist/index.js --bundle src/lambdaEntry.ts"
+    }
+}
