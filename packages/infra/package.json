@@ -4,6 +4,12 @@
     "type": "module",
     "scripts": {
         "cdk": "cdk --profile sso",
+        "diff": "npm run cdk -- diff",
+        "deploy": "npm run cdk -- deploy",
         "eslint": "eslint src/**.*.ts"
+    },
+    "dependencies": {
+        "babylon-server": "*",
+        "babylon-recorder-lambdas": "*"
     }
 }

@@ -40,6 +40,11 @@ Now you can run `cdk` operations that require account access like below
 * `npm -w babylon-server run build` - build the server js (served by express js to the headless puppeteer browser)
 * `npx tsx -- packages/lambdas/src/testLambda.ts` - runs the lambda locally
 
+Also, use turborepo's commands for one command diff/deploy
+* `npx turbo run build`
+* `npx turbo run diff`
+* `npx turbo run deploy`
+
 ## Pull down screenshots and create a video
 
 `aws s3 sync s3://babylon-recorder-screenshots-{account}/screenshots/ screenshots/ --profile sso`
